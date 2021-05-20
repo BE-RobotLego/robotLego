@@ -210,7 +210,7 @@ public class Ambulance {
 
 	public ArrayList<Case> getShortestWayToPatient(Case curr){
 		ArrayList<Case> shortestOrdre = null;
-		int poidsMin = 50000;
+		int poidsMin = Integer.MAX_VALUE;
 		ArrayList<Case> patients = p.getPatientList();
 		Dijkstra d;
 		for(Case c : patients){
@@ -226,7 +226,7 @@ public class Ambulance {
 
 	public ArrayList<Case> getShortestWayToHopital(Case curr){
 		ArrayList<Case> shortestOrdre = null;
-		int poidsMin = 50000;
+		int poidsMin = Integer.MAX_VALUE;
 		ArrayList<Case> hopitaux = p.getHopitalList();
 		Dijkstra d;
 		for(Case c : hopitaux){
