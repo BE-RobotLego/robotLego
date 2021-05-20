@@ -1,2 +1,2 @@
-start /w cd src ^& nxjpcc main/MainTelecommande.java bluetooth/BluetoothConnection.java deplacements/Deplacements cases/Case.java  cases/Parcours.java  robot/Mouvement.java robot/Orientation.java robot/Robot.java lecture/Lecture.java ^&^& exit
+start /w cd src ^& nxjpcc main/MainTelecommande.java bluetooth/BluetoothConnection.java deplacements/Deplacements cases/Case.java cases/Parcours.java robot/Orientation.java robot/Robot.java lecture/Lecture.java ^&^& exit
 start cd src ^& nxjpc main/MainTelecommande

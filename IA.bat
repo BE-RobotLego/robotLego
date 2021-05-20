@@ -1,2 +1,2 @@
-start /w cd src ^& nxjpcc main/MainIA.java bluetooth/BluetoothConnection.java deplacements/Deplacements.java cases/Case.java cases/Graphe.java cases/Parcours.java ia/Ambulance.java ia/Chemin.java ia/Dijkstra.java ia/Infos.java robot/Mouvement.java robot/Orientation.java robot/Robot.java lecture/Lecture.java ^&^& exit
+start /w cd src ^& nxjpcc main/MainIA.java bluetooth/BluetoothConnection.java deplacements/Deplacements.java cases/Case.java cases/Graphe.java cases/Parcours.java ia/Ambulance.java ia/Chemin.java ia/Dijkstra.java ia/Infos.java robot/Orientation.java robot/Robot.java lecture/Lecture.java ^&^& exit
 start cd src ^& nxjpc main/MainIA
