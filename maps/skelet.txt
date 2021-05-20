@@ -1,6 +1,9 @@
-iRobot
-jRobot
-Orientation (Sud, Nord, Est, Ouest)
+iRobot1
+jRobot1
+Orientation (Sud, Nord, Est, Ouest)1
+iRobot2
+jRobot2
+Orientation (Sud, Nord, Est, Ouest)2
 nbLignes
 nbColonnes
 nbPatients
