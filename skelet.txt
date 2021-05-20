@@ -1,0 +1,9 @@
+iRobot
+jRobot
+Orientation (Sud, Nord, Est, Ouest)
+nbLignes
+nbColonnes
+nbPatients
+Case0/0 Case 0/1 ..
+Case1/1...
+...
