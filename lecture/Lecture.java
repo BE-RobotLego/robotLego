@@ -54,7 +54,7 @@ public class Lecture extends Component {
                     oriRobot = Orientation.W;
                     break;
                 default:
-                    System.out.println("Erreur d'entrée");
+                    System.out.println("Erreur d'entrÃ©e");
                     oriRobot = null;
             }
 
