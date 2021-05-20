@@ -161,7 +161,7 @@ public class Ambulance {
 						return 1;//on quitte la fonction pour recalculer un itinéraire
 					}
 					System.out.println(robot.getName()+" : Chemin bloqué par "+robotH.getName()+"... J'attends");
-					TimeUnit.SECONDS.sleep(2);
+					TimeUnit.SECONDS.sleep(1);
 					attente++;
 				}
 			}
