@@ -15,14 +15,14 @@ import java.util.concurrent.TimeUnit;
 
 //Comportement du robot
 public class Ambulance {
-	private Deplacements vroum;
-	private Robot robot;
-	private Parcours p;
-	private Graphe g;
+	private final Deplacements vroum;
+	private final Robot robot;
+	private final Parcours p;
+	private final Graphe g;
 	private int poidsChemin;
-	private NXTComm nxtComm;
-	private boolean is2player;
-	private Robot robotH;
+	private final NXTComm nxtComm;
+	private final boolean is2player;
+	private final Robot robotH;
 
 	public Ambulance (Robot robot, Parcours p, Graphe g, RemoteMotor rmB, RemoteMotor rmC, NXTComm nxtComm, boolean is2player, Robot robotH){
 		this.robot = robot;
@@ -38,7 +38,6 @@ public class Ambulance {
 	public void comportementAmbulance() throws IOException, InterruptedException {
 		Case curr;
 		while(p.getNbPatients() > 0 || robot.getCapacity() < 2){
-			System.out.println("Look up for a way");
 			curr = robot.getCurrCase(p);
 			//Si l'ambulance est vide
 			if(robot.getCapacity() == 2){
@@ -50,8 +49,6 @@ public class Ambulance {
 			et d'aller chercher le deuxième après ou alors
 			aller chercher le deuxième puis aller à l'hopital*/
 			else if(robot.getCapacity() == 1 && p.getNbPatients()>0){
-				System.out.println("Here !");
-				/*TODO : Comparer HPH ou PH*/
 				PHorHP(curr);
 			}
 
@@ -59,7 +56,6 @@ public class Ambulance {
 			else if(p.getNbPatients() == 0 || robot.getCapacity() == 0){
 				goToHopital(curr);
 			}
-			System.out.println("Way found, lets go home");
 		}
 	}
 
@@ -99,7 +95,6 @@ public class Ambulance {
 
 	private void execPH(ArrayList<ArrayList<Case>> ph, Case curr) throws IOException, InterruptedException {
 		Chemin c;
-		System.out.println("Listen !");
 		for(int i = 0;i<ph.size();i++){
 			c = new Chemin(ph.get(i),robot,curr);
 			if(execInstructions(c.getOrdre(),c.getInstructions()) == 0){
@@ -116,7 +111,6 @@ public class Ambulance {
 	private void execHP(ArrayList<ArrayList<Case>> hp,Case curr) throws IOException, InterruptedException {
 		Chemin c;
 		for(int i = 0;i<hp.size();i++){
-			System.out.println("Look !");
 			c = new Chemin(hp.get(i),robot,curr);
 			if(execInstructions(c.getOrdre(),c.getInstructions()) == 0) {
 				curr = robot.getCurrCase(p);
