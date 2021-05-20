@@ -46,9 +46,9 @@ public class Ambulance {
 			}
 
 			/*Si l'ambulance a de la place et qu'il y a d'autres patients a sauver
-			On va alors chercher si il est plus rapide d'ammener le patient à l'hopital
-			et d'aller chercher le deuxième après ou alors
-			aller chercher le deuxième puis aller à l'hopital*/
+			On va alors chercher si il est plus rapide d'ammener le patient Ã  l'hopital
+			et d'aller chercher le deuxiÃ¨me aprÃ¨s ou alors
+			aller chercher le deuxiÃ¨me puis aller Ã  l'hopital*/
 			else if(robot.getCapacity() == 1 && p.getNbPatients()>0){
 				System.out.println("Here !");
 				/*TODO : Comparer HPH ou PH*/
@@ -152,25 +152,25 @@ public class Ambulance {
 			dest = ordre.get(pointer);
 			if(is2player) {
 				attente = 0;
-				//Si le joueur est sur la case où l'on veut se rendre, on attend
+				//Si le joueur est sur la case oÃ¹ l'on veut se rendre, on attend
 				while (dest.equals(robotH.getCurrCase(p)) || dest.equals(robotH.getLastCase(p))) {
 					if(attente >= 5){
-						//Ici, on ne met pas Integer.MAX_VALUE sinon Dijkstra ne pourra plus être calculé
-						//On met donc une valeur élevée (ici 50000)
+						//Ici, on ne met pas Integer.MAX_VALUE sinon Dijkstra ne pourra plus Ãªtre calculÃ©
+						//On met donc une valeur Ã©levÃ©e (ici 50000)
 						p.getCaseAt(dest.getI(),dest.getJ()).setPoids(50000);
-						return 1;//on quitte la fonction pour recalculer un itinéraire
+						return 1;//on quitte la fonction pour recalculer un itinÃ©raire
 					}
-					System.out.println(robot.getName()+" : Chemin bloqué par "+robotH.getName()+"... J'attends");
+					System.out.println(robot.getName()+" : Chemin bloquÃ© par "+robotH.getName()+"... J'attends");
 					TimeUnit.SECONDS.sleep(2);
 					attente++;
 				}
 			}
-			//Si le patient/l'hopital est toujours présent sur la case destination
+			//Si le patient/l'hopital est toujours prÃ©sent sur la case destination
 			//Si il ne l'est plus on va supprimer le chemin et le robot va calculer un nouveau chemin
 			if(ordre.get(ordre.size()-1).hasPatient() || ordre.get(ordre.size()-1).hasHopital()) {
 				System.out.println(instruction);
-				//Si on fait un demi tour, on va prendre la derniere case visitée comme coordonnée
-				//On va néanmoins s'avancer un peu pour pouvoir mieux se placer dans la case
+				//Si on fait un demi tour, on va prendre la derniere case visitÃ©e comme coordonnÃ©e
+				//On va nÃ©anmoins s'avancer un peu pour pouvoir mieux se placer dans la case
 				if (instruction.contains("Demi-Tour")) {
 					vroum.DepTransiblanc();
 					vroum.DepDemiTour();
