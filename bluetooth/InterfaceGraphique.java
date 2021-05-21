@@ -29,7 +29,7 @@ public class InterfaceGraphique extends JFrame {
     JButton droite;
 
 
-    //////////Boutons SpÈciaux //////////
+    //////////Boutons Sp√©ciaux //////////
     JButton recalibrage = new JButton("recalibrage");
     JButton demiTour;
     JButton transiBlanc = new JButton("transiBlanc");
@@ -51,7 +51,7 @@ public class InterfaceGraphique extends JFrame {
     private Robot bot;
     private Parcours p;
 
-    public InterfaceGraphique(RemoteMotor rmB, RemoteMotor rmC, NXTComm nxtComm,Robot bot, Parcours p){
+    public InterfaceGraphique(RemoteMotor rmB, RemoteMotor rmC, NXTComm nxtComm,Robot bot, Parcours p) {
         this.rmB = rmB;
         this.rmC = rmC;
         this.nxtComm = nxtComm;
@@ -65,6 +65,7 @@ public class InterfaceGraphique extends JFrame {
         panelBoutonsDep= new JPanel(new GridLayout(3,3));
 
         DeplacementPanel();
+        EnabledDisabled();
 
         mainPanel.add(panelBoutonsDep);
         ActionPanel();
@@ -138,7 +139,7 @@ public class InterfaceGraphique extends JFrame {
 
 
         erreurs.setFont(new Font("Serif",Font.CENTER_BASELINE,18));
-        String posiBotText = "YAAAAAAAAAAAAAAAAY";
+        String posiBotText = "Je suis dans les starting-blocks";
         erreurs.setText(posiBotText);
         erreurs.setForeground(Color.red);
         erreurs.setHorizontalAlignment(SwingConstants.CENTER);
@@ -159,6 +160,7 @@ public class InterfaceGraphique extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     toutDroitListenner();
+                    EnabledDisabled();
                     System.out.println(bot.getName() + " est en : " + bot.getiCurr() + " / " + bot.getjCurr());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -173,6 +175,7 @@ public class InterfaceGraphique extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     viragesListener("Gauche");
+                    EnabledDisabled();
                     System.out.println(bot.getName() + " est en : " + bot.getiCurr() + " / " + bot.getjCurr());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -187,6 +190,7 @@ public class InterfaceGraphique extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     viragesListener("Droite");
+                    EnabledDisabled();
                     System.out.println(bot.getName() + " est en : " + bot.getiCurr() + " / " + bot.getjCurr());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -195,7 +199,6 @@ public class InterfaceGraphique extends JFrame {
                 }
             }
         });
-
         recalibrage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -261,8 +264,6 @@ public class InterfaceGraphique extends JFrame {
         intermediaire5.add(droite);
         intermediaire6.add(demiTour);
 
-
-
         panelBoutonsDep.add(intermediaire1);
         panelBoutonsDep.add(intermediaire2);
         panelBoutonsDep.add(intermediaire3);
@@ -280,7 +281,6 @@ public class InterfaceGraphique extends JFrame {
 
     //////les listrenner
 
-
     private void viragesListener(String directionEntree) throws IOException, InterruptedException {
         Orientation oriRobot = bot.getOriRobot();
         Case curr = bot.getCurrCase(p);
@@ -289,47 +289,47 @@ public class InterfaceGraphique extends JFrame {
             switch(oriRobot){
                 case E:
                     if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('R')){
-                        erreurs.setText("J'ai tournÈ");
+                        erreurs.setText("J'ai tourn√© √† gauche");
                         dIA.slipGauche(nxtComm);
                     }
                     if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('D')){
                         if (directionEntree.equals("Droite")){
-                            erreurs.setText("J'ai tournÈ");
+                            erreurs.setText("J'ai tourn√© √† droite");
                             dIA.slipDroite(nxtComm);
                             updatePosition("SlipDroit");
                         }
                         else {
-                            erreurs.setText("J'ai tournÈ");
+                            erreurs.setText("J'ai tourn√© √† gauche");
                             dIA.slipGauche(nxtComm);
                             updatePosition("SlipGauche");
                         }
                     }
                     if (curr.contientDir('L') && curr.contientDir('R') && curr.contientDir('D')){
-                        erreurs.setText("J'ai tournÈ");
+                        erreurs.setText("J'ai tourn√© √† droite");
                         dIA.slipDroite(nxtComm);
                         updatePosition("SlipDroit");
                     }
                     break;
                 case N:
                     if (curr.contientDir('U') && curr.contientDir('R') && curr.contientDir('D')){
-                        erreurs.setText("J'ai tournÈ");
+                        erreurs.setText("J'ai tourn√© √† droite");
                         dIA.slipDroite(nxtComm);
                         updatePosition("SlipDroit");
                     }
                     if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('D')){
-                        erreurs.setText("J'ai tournÈ");
+                        erreurs.setText("J'ai tourn√© √† gauche");
                         dIA.slipGauche(nxtComm);
                         updatePosition("SlipGauche");
 
                     }
                     if (curr.contientDir('L') && curr.contientDir('R') && curr.contientDir('D')){
                         if (directionEntree.equals("Droite")){
-                            erreurs.setText("J'ai tournÈ");
+                            erreurs.setText("J'ai tourn√© √† droite");
                             dIA.slipDroite(nxtComm);
                             updatePosition("SlipDroit");
                         }
                         else {
-                            erreurs.setText("J'ai tournÈ");
+                            erreurs.setText("J'ai tourn√© √† gauche");
                             dIA.slipGauche(nxtComm);
                             updatePosition("SlipGauche");
                         }
@@ -338,47 +338,47 @@ public class InterfaceGraphique extends JFrame {
                 case W:
                     if (curr.contientDir('U') && curr.contientDir('R') && curr.contientDir('D')){
                         if (directionEntree.equals("Droite")){
-                            erreurs.setText("J'ai tournÈ");
+                            erreurs.setText("J'ai tourn√© √† droite");
                             dIA.slipDroite(nxtComm);
                             updatePosition("SlipDroit");
                         }
                         else {
-                            erreurs.setText("J'ai tournÈ");
+                            erreurs.setText("J'ai tourn√© √† gauche");
                             dIA.slipGauche(nxtComm);
                             updatePosition("SlipGauche");
                         }
                     }
                     if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('R')){
-                        erreurs.setText("J'ai tournÈ");
+                        erreurs.setText("J'ai tourn√© √† droite");
                         dIA.slipDroite(nxtComm);
                         updatePosition("SlipDroit");
                     }
                     if (curr.contientDir('L') && curr.contientDir('R') && curr.contientDir('D')){
-                        erreurs.setText("J'ai tournÈ");
+                        erreurs.setText("J'ai tourn√© √† gauche");
                         dIA.slipGauche(nxtComm);
                         updatePosition("SlipGauche");
                     }
                     break;
                 case S:
                     if (curr.contientDir('U') && curr.contientDir('R') && curr.contientDir('D')){
-                        erreurs.setText("J'ai tournÈ");
+                        erreurs.setText("J'ai tourn√© √† gauche");
                         dIA.slipGauche(nxtComm);
                         updatePosition("SlipGauche");
                     }
                     if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('R')){
                         if (directionEntree.equals("Droite")){
-                            erreurs.setText("J'ai tournÈ");
+                            erreurs.setText("J'ai tourn√© √† droite");
                             dIA.slipDroite(nxtComm);
                             updatePosition("SlipDroit");
                         }
                         else {
-                            erreurs.setText("J'ai tournÈ");
+                            erreurs.setText("J'ai tourn√© √† gauche");
                             dIA.slipGauche(nxtComm);
                             updatePosition("SlipGauche");
                         }
                     }
                     if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('D')){
-                        erreurs.setText("J'ai tournÈ");
+                        erreurs.setText("J'ai tourn√© √† droite");
                         dIA.slipDroite(nxtComm);
                         updatePosition("SlipDroit");
                     }
@@ -388,7 +388,7 @@ public class InterfaceGraphique extends JFrame {
         }
         else {
             if (curr.isVirage()){
-                erreurs.setText("J'ai tournÈ");
+                erreurs.setText("J'ai tourn√© dans le sens du virage");
                 dIA.DepVirage(nxtComm);
                 updatePosition("Virage");
 
@@ -411,48 +411,48 @@ public class InterfaceGraphique extends JFrame {
             switch (oriRobot){
                 case E:
                     if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('R')){
-                        erreurs.setText("Je suis allÈ tout droit");
+                        erreurs.setText("Je suis all√© tout droit");
                         dIA.slipDroitGauche(nxtComm);
                         updatePosition("ToutDroit");
                     }
                     if (curr.contientDir('L') && curr.contientDir('R') && curr.contientDir('D')){
-                        erreurs.setText("Je suis allÈ tout droit");
+                        erreurs.setText("Je suis all√© tout droit");
                         dIA.slipDroitDroite(nxtComm);
                         updatePosition("ToutDroit");
                     }
                     break;
                 case N:
                     if (curr.contientDir('U') && curr.contientDir('R') && curr.contientDir('D')){
-                        erreurs.setText("Je suis allÈ tout droit");
+                        erreurs.setText("Je suis all√© tout droit");
                         dIA.slipDroitDroite(nxtComm);
                         updatePosition("ToutDroit");
                     }
                     if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('D')){
-                        erreurs.setText("Je suis allÈ tout droit");
+                        erreurs.setText("Je suis all√© tout droit");
                         dIA.slipDroitGauche(nxtComm);
                         updatePosition("ToutDroit");
                     }
                     break;
                 case W:
                     if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('R')){
-                        erreurs.setText("Je suis allÈ tout droit");
+                        erreurs.setText("Je suis all√© tout droit");
                         dIA.slipDroitDroite(nxtComm);
                         updatePosition("ToutDroit");
                     }
                     if (curr.contientDir('L') && curr.contientDir('R') && curr.contientDir('D')){
-                        erreurs.setText("Je suis allÈ tout droit");
+                        erreurs.setText("Je suis all√© tout droit");
                         dIA.slipDroitGauche(nxtComm);
                         updatePosition("ToutDroit");
                     }
                     break;
                 case S:
                     if (curr.contientDir('U') && curr.contientDir('R') && curr.contientDir('D')){
-                        erreurs.setText("Je suis allÈ tout droit");
+                        erreurs.setText("Je suis all√© tout droit");
                         dIA.slipDroitGauche(nxtComm);
                         updatePosition("ToutDroit");
                     }
                     if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('D')){
-                        erreurs.setText("Je suis allÈ tout droit");
+                        erreurs.setText("Je suis all√© tout droit");
                         dIA.slipDroitDroite(nxtComm);
                         updatePosition("ToutDroit");
                     }
@@ -462,7 +462,7 @@ public class InterfaceGraphique extends JFrame {
         }
         else{
             if (curr.isDroite()){
-                erreurs.setText("Je suis allÈ tout droit");
+                erreurs.setText("Je suis all√© tout droit");
                 dIA.DepDroit(nxtComm);
                 updatePosition("ToutDroit");
 
@@ -475,7 +475,7 @@ public class InterfaceGraphique extends JFrame {
     }
 
 
-
+   // permet de mettre √† jour la position robot en fonction de l'orientation et des fonctions de d√©placement
     public void updatePosition(String action) {
         Case castwa = bot.getCurrCase(p);
         Orientation orient = bot.getOriRobot();
@@ -590,6 +590,117 @@ public class InterfaceGraphique extends JFrame {
         }
         String posiBotText = "Position : "+bot.getiCurr()+","+bot.getjCurr();
         posiBot.setText(posiBotText);
+    }
+
+    //Enabled/Disabled les boutons en fonctions du type de case
+    private void EnabledDisabled() {
+        Orientation oriRobot = bot.getOriRobot();
+        Case curr = bot.getCurrCase(p);
+        bot.getCurrCase(p).getDirCase();
+        haut.setEnabled(true);
+        gauche.setEnabled(true);
+        droite.setEnabled(true);
+        if (curr.is3way()){
+            switch(oriRobot){
+                case E:
+                    if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('R')){
+                        droite.setEnabled(false);
+                        break;
+                    }
+                    if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('D')){
+                        haut.setEnabled(false);
+                        break;
+                    }
+                    if (curr.contientDir('L') && curr.contientDir('R') && curr.contientDir('D')){
+                        gauche.setEnabled(false);
+                        break;
+                    }
+                    break;
+                case N:
+                    if (curr.contientDir('U') && curr.contientDir('R') && curr.contientDir('D')){
+                        gauche.setEnabled(false);
+                        break;
+                    }
+                    if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('D')){
+                        droite.setEnabled(false);
+                        break;
+                    }
+                    if (curr.contientDir('L') && curr.contientDir('R') && curr.contientDir('D')){
+                        haut.setEnabled(false);
+                        break;
+                    }
+                    break;
+                case W:
+                    if (curr.contientDir('U') && curr.contientDir('R') && curr.contientDir('D')){
+                        haut.setEnabled(false);
+                        break;
+                    }
+                    if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('R')){
+                        gauche.setEnabled(false);
+                        break;
+                    }
+                    if (curr.contientDir('L') && curr.contientDir('R') && curr.contientDir('D')){
+                        droite.setEnabled(false);
+                        break;
+                    }
+                    break;
+                case S:
+                    if (curr.contientDir('U') && curr.contientDir('R') && curr.contientDir('D')){
+                        droite.setEnabled(false);
+                        break;
+                    }
+                    if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('R')){
+                        haut.setEnabled(false);
+                        break;
+                    }
+                    if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('D')){
+                        gauche.setEnabled(false);
+                        break;
+                    }
+                    break;
+            }
+
+        }
+        else if (curr.isVirage()){
+                haut.setEnabled(false);
+                switch(oriRobot){
+                    case E:
+                        if (curr.contientDir('U') && curr.contientDir('L')){
+                            droite.setEnabled(false);
+                            break;
+                        }else if (curr.contientDir('D') && curr.contientDir('L')) {
+                            gauche.setEnabled(false);
+                            break;
+                        }
+                    case N:
+                        if (curr.contientDir('D') && curr.contientDir('L')){
+                            droite.setEnabled(false);
+                            break;
+                        }else if (curr.contientDir('D') && curr.contientDir('R')) {
+                            gauche.setEnabled(false);
+                            break;
+                        }
+                    case W:
+                        if (curr.contientDir('U') && curr.contientDir('R')){
+                            gauche.setEnabled(false);
+                            break;
+                        }else if (curr.contientDir('D') && curr.contientDir('R')) {
+                            droite.setEnabled(false);
+                            break;
+                        }
+                    case S:
+                        if (curr.contientDir('U') && curr.contientDir('R')){
+                            gauche.setEnabled(false);
+                            break;
+                        }else if (curr.contientDir('U') && curr.contientDir('L')) {
+                            droite.setEnabled(false);
+                            break;
+                        }
+                }
+        }else if (curr.isDroite()){
+                gauche.setEnabled(false);
+                droite.setEnabled(false);
+            }
     }
 
 }
