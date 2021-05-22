@@ -14,14 +14,20 @@ public class Deplacements {
     private RemoteMotor rmB;
     private RemoteMotor rmC;
 
+    
+    /////////////// les vitesses des differents moteurs ///////////////
+    
+    // vissese pendant virage
     private final int FastVirage = 38;
     private final int NormalVirage = 16;
     private final int LowVirage = 13;
 
+    // vitesses pendant lees droites 
     private final int FastDroite = 35;
     private final int LowDroite = 25;
     private final int NormalDroite = 26 ;
 
+    // vitesses pendant les intersections
     private final int FastSlipVirage = 28;
     private final int MediumSlipVirage = 20;
     private final int LowSlipVirage = 13;
@@ -36,6 +42,11 @@ public class Deplacements {
     //Valeur de transition entre le blanc et le noir
     private final int blackWhiteThreshold = 625;
 
+    
+    
+    
+    /////////////// appel des fonction generiques ///////////////
+    
     public void DepVirage(NXTComm nxtComm) throws IOException, InterruptedException {
         VirageDroite(nxtComm, FastVirage, LowVirage, NormalVirage);
         DepTransiblanc();
@@ -60,7 +71,7 @@ public class Deplacements {
         Recalibrage(nxtComm);
     }
 
-
+    // aller tout droit dans les intersections 
     public void slipDroitDroite(NXTComm nxtComm) throws IOException, InterruptedException {
         // capteur droit compte le blanc
         slipToutDroit(nxtComm,3,2,LowSlipDroit, LowSlipDroit, MediumSlipDroit,FastSlipDroit);
@@ -88,6 +99,8 @@ public class Deplacements {
         rmC.stop();
         rmB.stop();
     }
+    
+    // fonction de transition entre deux cases 
     public void DepTransiblanc () throws InterruptedException {
         rmB.setPower(30);
         rmC.setPower(30);
@@ -98,6 +111,7 @@ public class Deplacements {
         rmB.stop();
     }
 
+    // recalibrage du robot pour commencer les cases plus droit 
     public void Recalibrage(NXTComm nxtComm) throws IOException {
         NXTCommand nxtCommand = new NXTCommand(nxtComm);
         nxtCommand.setInputMode(2,NXTProtocol.LIGHT_ACTIVE,NXTProtocol.RAWMODE);
@@ -105,7 +119,7 @@ public class Deplacements {
         rmC.setPower(SpeedRecalibrage);
         rmB.setPower(SpeedRecalibrage);
         int lower = SpeedRecalibrage;
-        while (nxtCommand.getInputValues(2).rawADValue<blackWhiteThreshold){
+        while (nxtCommand.getInputValues(2).rawADValue<blackWhiteThreshold){ // Si un capteur voit du blanc 
             rmB.backward();
             rmC.forward();
             lower -= 1;
@@ -115,7 +129,7 @@ public class Deplacements {
         rmC.stop();
         rmB.stop();
         lower  = SpeedRecalibrage;
-        while (nxtCommand.getInputValues(3).rawADValue<blackWhiteThreshold){
+        while (nxtCommand.getInputValues(3).rawADValue<blackWhiteThreshold){ // si le dexieme capteur vois du blanc 
             rmB.forward();
             rmC.backward();
             lower -= 1;
@@ -126,6 +140,9 @@ public class Deplacements {
         rmB.stop();
     }
 
+    
+    // une seul fonction pour aller tout droit et prendre les virages simples
+    // les vitesse change quand on appel la fontion en depend de ce que on veut faire
     private void VirageDroite(NXTComm nxtComm,int SpeedVirageFast ,int SpeedVirageLow, int SpeedNormal) throws InterruptedException, IOException {
         NXTCommand nxtCommand = new NXTCommand(nxtComm);
         nxtCommand.setInputMode(2,NXTProtocol.LIGHT_ACTIVE,NXTProtocol.RAWMODE);
@@ -133,10 +150,13 @@ public class Deplacements {
         int valLightRight;
         int valLightLeft;
         Thread.sleep(10);
+        
+        // Boucle tant que les deux capteurs ne voient pas du blanc en memem temps 
         while (nxtCommand.getInputValues(3).rawADValue >blackWhiteThreshold || nxtCommand.getInputValues(2).rawADValue  >blackWhiteThreshold){
             valLightRight = nxtCommand.getInputValues(2).rawADValue;
             valLightLeft = nxtCommand.getInputValues(3).rawADValue;
-            if (valLightRight> blackWhiteThreshold && valLightLeft > blackWhiteThreshold) {
+            if (valLightRight> blackWhiteThreshold && valLightLeft > blackWhiteThreshold) { 
+                // les deux moteurs a la meme vitesse 
                 rmB.setPower(SpeedNormal);
                 rmC.setPower(SpeedNormal);
                 rmB.forward();
@@ -144,7 +164,7 @@ public class Deplacements {
             }
             else {
                 if (valLightRight<blackWhiteThreshold){
-                    //todo c plus vite
+                    // les moteurs a des vitesses diferentes pour Tourner
                     rmB.setPower(SpeedVirageLow);
                     rmC.setPower(SpeedVirageFast);
                     rmB.forward();
@@ -152,7 +172,7 @@ public class Deplacements {
                 }
                 else {
                     if(valLightLeft<blackWhiteThreshold){
-                        // todo B plus vite
+                        // Tourner de lautre cote
                         rmB.setPower(SpeedVirageFast);
                         rmC.setPower(SpeedVirageLow);
                         rmB.forward();
@@ -166,6 +186,7 @@ public class Deplacements {
     }
 
 
+    // aller a droite ou a gauche dans les cases intersections 
     private void slipVirage(NXTComm nxtComm,int port2, int port3, int SpeedVirageFast, int SpeedVirageMedium ,int SpeedVirageLow) throws InterruptedException, IOException {
         NXTCommand nxtCommand = new NXTCommand(nxtComm);
         nxtCommand.setInputMode(port2,NXTProtocol.LIGHT_ACTIVE,NXTProtocol.RAWMODE);
@@ -178,8 +199,8 @@ public class Deplacements {
         if (nxtCommand.getInputValues(port3).rawADValue < blackWhiteThreshold) {
             compteur--;
         }
-        while (compteur<3){
-            while (nxtCommand.getInputValues(port2).rawADValue < blackWhiteThreshold && compteur<3){
+        while (compteur<3){ // un compteur car le capteur doit voir 3 fois une ligne blanche
+            while (nxtCommand.getInputValues(port2).rawADValue < blackWhiteThreshold && compteur<3){ 
                 rmB.setPower(SpeedVirageLow);
                 rmC.setPower(SpeedVirageFast);
                 rmB.forward();
@@ -191,7 +212,7 @@ public class Deplacements {
                     estBlanc = true;
                     compteur++;
                 }
-                if (compteur >= 3){
+                if (compteur >= 3){ // arret des moteurs car fin de la fonction 
                     rmC.stop();
                     rmB.stop();
                 }
@@ -226,6 +247,10 @@ public class Deplacements {
         rmB.stop();
     }
 
+    
+    
+    // aller tout droit lors des passages des intersections 
+    //fonction de principe similaire au virege dur  ant les intersections 
     private void slipToutDroit(NXTComm nxtComm,int port2, int port3, int SpeedVirageFast, int SpeedVirageMedium ,int SpeedVirageLow, int SpeedVirageLow2) throws InterruptedException, IOException {
         NXTCommand nxtCommand = new NXTCommand(nxtComm);
         nxtCommand.setInputMode(port2, NXTProtocol.LIGHT_ACTIVE, NXTProtocol.RAWMODE);
