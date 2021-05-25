@@ -15,6 +15,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class InterfaceGraphique extends JFrame {
+    
+    //  Tout les Pannels 
     JPanel mainPanel;
     JPanel panelBoutonsDep;
 
@@ -23,28 +25,32 @@ public class InterfaceGraphique extends JFrame {
     JPanel panelAffichageErreur;
 
 
-    /////// Bouttons Deplacements////////
+    // Bouttons Deplacements 
     JButton haut ;
     JButton gauche ;
     JButton droite;
 
 
-    //////////Boutons Spéciaux //////////
+    // Boutons Spéciaux 
     JButton recalibrage = new JButton("recalibrage");
     JButton demiTour;
     JButton transiBlanc = new JButton("transiBlanc");
     JButton deposer ;
     JButton ramasser;
 
+    //  Paneaux vide pour placer les boutons 
     JPanel panelvide1 = new JPanel();
     JPanel panelvide2 = new JPanel();
     JPanel panelvide3 = new JPanel();
+    
+    //  Affichage de textes sur la telecomande 
     JLabel posiBot = new JLabel();
     JLabel imBot = new JLabel("BOT");
     JLabel erreurs = new JLabel();
 
     Deplacements dIA;
 
+    // Infos relatives controle du robot, sa position et ses moteurs
     private RemoteMotor rmB;
     private RemoteMotor rmC;
     private NXTComm nxtComm;
@@ -74,7 +80,7 @@ public class InterfaceGraphique extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    public void mettresIcons(){
+    public void mettresIcons(){ // Ajout d images sur les boutons de deplacement 
 
         ImageIcon icon1 = new ImageIcon("../Icon/Haut.png");
         Image scaleImage1 = icon1.getImage().getScaledInstance(40, 40,Image.SCALE_DEFAULT);
@@ -137,7 +143,7 @@ public class InterfaceGraphique extends JFrame {
 
         //todo ajout du texte
 
-
+        // ajout daffichage de messages d erreurs et de mise a jour en direct
         erreurs.setFont(new Font("Serif",Font.CENTER_BASELINE,18));
         String posiBotText = "Je suis dans les starting-blocks";
         erreurs.setText(posiBotText);
@@ -154,13 +160,32 @@ public class InterfaceGraphique extends JFrame {
         mainPanel.add(panelActions);
     }
 
-    public void DeplacementPanel(){
-        haut.addActionListener(new ActionListener() {
+    public void DeplacementPanel(){ // Creation du paneau contenant tout les boutons de déplacements 
+        haut.addActionListener(new ActionListener() { // listenner du bouton tout droit
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    toutDroitListenner();
-                    EnabledDisabled();
+                    toutDroitListenner(); //Choix de la fonction de deplacement a lancer 
+                    EnabledDisabled();  // desactivation des boutons dit inutile dans la case courarante
+                    
+                    // affichage de la position
+                    System.out.println(bot.getName() + " est en : " + bot.getiCurr() + " / " + bot.getjCurr()); 
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+            }
+        });
+
+        gauche.addActionListener(new ActionListener() { // listenner du bouton tourner a gauche
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    viragesListener("Gauche"); //Choix de la fonction de deplacement a lancer 
+                    EnabledDisabled(); // desactivation des boutons dit inutile dans la case courarante
+                    
+                    // affichage de la position
                     System.out.println(bot.getName() + " est en : " + bot.getiCurr() + " / " + bot.getjCurr());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -170,27 +195,14 @@ public class InterfaceGraphique extends JFrame {
             }
         });
 
-        gauche.addActionListener(new ActionListener() {
+        droite.addActionListener(new ActionListener() { // listenner du bouton tourner a droite
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    viragesListener("Gauche");
-                    EnabledDisabled();
-                    System.out.println(bot.getName() + " est en : " + bot.getiCurr() + " / " + bot.getjCurr());
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-            }
-        });
-
-        droite.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    viragesListener("Droite");
-                    EnabledDisabled();
+                    viragesListener("Droite"); //Choix de la fonction de deplacement a lancer 
+                    EnabledDisabled(); // desactivation des boutons dit inutile dans la case courarante
+                    
+                    // affichage de la position
                     System.out.println(bot.getName() + " est en : " + bot.getiCurr() + " / " + bot.getjCurr());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -203,7 +215,7 @@ public class InterfaceGraphique extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    dIA.Recalibrage(nxtComm);
+                    dIA.Recalibrage(nxtComm); // lancement direct de la fonction de recalibrage 
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -214,7 +226,7 @@ public class InterfaceGraphique extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    dIA.DepTransiblanc();
+                    dIA.DepTransiblanc(); // lancement direct de la fonction de transition de case
                 } catch (InterruptedException interruptedException) {
                     interruptedException.printStackTrace();
                 }
@@ -224,20 +236,20 @@ public class InterfaceGraphique extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    dIA.DepDemiTour();
-                    updatePosition("Demi-tour");
+                    dIA.DepDemiTour(); // lancement direct de la fonction de demi tour
+                    updatePosition("Demi-tour"); // Mise à jour de la position du robot 
                 } catch (InterruptedException interruptedException) {
                     interruptedException.printStackTrace();
                 }
             }
         });
 
-
+        // panneaux vide pour espacer les bouttons avec un fond de couleur identiques aux autres panneaux
         Color couleursfond = new Color(238,238,238);
         panelvide1.setBackground(couleursfond);
         panelvide2.setBackground(couleursfond);
         panelvide3.setBackground(couleursfond);
-
+        
         posiBot.setFont(new Font("Serif",Font.CENTER_BASELINE,18));
         imBot.setFont(new Font("Serif",Font.CENTER_BASELINE,18));
         String posiBotText = "Position: "+bot.getiCurr()+","+bot.getjCurr();
@@ -250,7 +262,7 @@ public class InterfaceGraphique extends JFrame {
         panelvide1.add(imBot, BorderLayout.NORTH);
         panelvide1.add(posiBot,BorderLayout.CENTER);
 
-
+        // Panneaux container pour que les boutons ne prennent pas la case complete
         JPanel intermediaire1 = new JPanel();
         JPanel intermediaire2 = new JPanel();
         JPanel intermediaire3 = new JPanel();
@@ -264,6 +276,7 @@ public class InterfaceGraphique extends JFrame {
         intermediaire5.add(droite);
         intermediaire6.add(demiTour);
 
+        // ajout de tout les boutons et affichage dans le panneau de deplacement
         panelBoutonsDep.add(intermediaire1);
         panelBoutonsDep.add(intermediaire2);
         panelBoutonsDep.add(intermediaire3);
@@ -279,18 +292,21 @@ public class InterfaceGraphique extends JFrame {
 
     }
 
-    //////les listrenner
+    ////////////////////// les listrenner //////////////////////
 
+    //  Listenner des boutons de virages 
     private void viragesListener(String directionEntree) throws IOException, InterruptedException {
         Orientation oriRobot = bot.getOriRobot();
         Case curr = bot.getCurrCase(p);
         bot.getCurrCase(p).getDirCase();
-        if (curr.is3way()){
-            switch(oriRobot){
-                case E:
-                    if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('R')){
-                        erreurs.setText("J'ai tourné à gauche");
-                        dIA.slipGauche(nxtComm);
+        if (curr.is3way()){ // cas de l intersection 
+            switch(oriRobot){ // en fonction de lorientation du robot
+                case E: 
+                    // cas par cas en fonction de l orientation de la case 
+                    if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('R')){ 
+                        erreurs.setText("J'ai tourné à gauche"); // Mise a jour du texte afffiche 
+                        dIA.slipGauche(nxtComm); // application de la fonction de deplacemant 
+                        updatePosition("SlipGauche"); // mise a jour de la position du robot 
                     }
                     if (curr.contientDir('U') && curr.contientDir('L') && curr.contientDir('D')){
                         if (directionEntree.equals("Droite")){
@@ -387,7 +403,7 @@ public class InterfaceGraphique extends JFrame {
 
         }
         else {
-            if (curr.isVirage()){
+            if (curr.isVirage()){ // si cest un virage simple 
                 erreurs.setText("J'ai tourné dans le sens du virage");
                 dIA.DepVirage(nxtComm);
                 updatePosition("Virage");
@@ -403,6 +419,9 @@ public class InterfaceGraphique extends JFrame {
     }
 
 
+    
+    //  Listenner du bouton vers le haut 
+    
     private void toutDroitListenner () throws IOException, InterruptedException {
         Orientation oriRobot = bot.getOriRobot();
         Case curr = bot.getCurrCase(p);
