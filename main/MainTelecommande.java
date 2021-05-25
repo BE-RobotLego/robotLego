@@ -27,14 +27,14 @@ public class MainTelecommande {
             Parcours parcours = l.initParcours();
             Robot bot = l.initRobot();
 
-            System.out.println("Position de "+bot.getName()+" au départ : i = " + bot.getiCurr() + " j= " + bot.getjCurr());
+            System.out.println("Position de "+bot.getName()+" au dÃ©part : i = " + bot.getiCurr() + " j= " + bot.getjCurr());
             createTelecommand(nxtComm, rmB, rmC, parcours, bot);
         }
     }
 
     public static void createTelecommand(NXTComm nxtComm, RemoteMotor rmB, RemoteMotor rmC, Parcours parcours, Robot bot) {
         JFrame f = new InterfaceGraphique(rmB, rmC, nxtComm, bot, parcours);
-        f.setSize(500, 250);
+        f.setSize(450, 550);
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.addWindowListener(new java.awt.event.WindowAdapter() {
