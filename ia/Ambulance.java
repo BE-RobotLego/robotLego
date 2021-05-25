@@ -138,7 +138,7 @@ public class Ambulance {
 
 
 
-	private int execInstructions(ArrayList<Case> ordre, ArrayList<String> instructions) throws InterruptedException, IOException {
+		private int execInstructions(ArrayList<Case> ordre, ArrayList<String> instructions) throws InterruptedException, IOException {
 		int pointer = 0;
 		int attente;
 		Case dest;
@@ -147,7 +147,7 @@ public class Ambulance {
 			if(is2player) {
 				attente = 0;
 				//Si le joueur est sur la case où l'on veut se rendre, on attend
-				while (dest.equals(robotH.getCurrCase(p)) || dest.equals(robotH.getLastCase(p))) {
+				while (wayIsBlocked(dest)) {
 					if(attente >= 5){
 						//Ici, on ne met pas Integer.MAX_VALUE sinon Dijkstra ne pourra plus être calculé
 						//On met donc une valeur élevée (ici 50000)
@@ -238,5 +238,21 @@ public class Ambulance {
 		}
 		poidsChemin = poidsMin;
 		return shortestOrdre;
+	}
+
+	public boolean wayIsBlocked(Case dest){
+		//Si le joueur est sur la case où on veut aller
+		if(dest.equals(robotH.getCurrCase(p)))
+			return true;
+		else{
+			//On regarde les cases voisines de la destination du robot, si il y a le robot humain
+			//On fait arreter le robot pour éviter une possible collision
+			ArrayList<Case> voisins = g.getGraphe().get(dest);
+			for(Case c : voisins){
+				if(c.equals(robotH.getCurrCase(p)))
+					return true;
+			}
+			return false;
+		}
 	}
 }
